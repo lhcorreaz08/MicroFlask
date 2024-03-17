@@ -1,17 +1,10 @@
-# Utilizar la imagen oficial de Python como imagen base
-FROM python:3.8-slim
+FROM python:3.9
 
-# Establecer el directorio de trabajo en el contenedor
 WORKDIR /app
 
-# Copiar los archivos necesarios al directorio de trabajo
-COPY . /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Instalar las dependencias de la aplicación
-RUN pip install --no-cache-dir flask
+COPY . .
 
-# Indicar el puerto que el contenedor debe exponer
-EXPOSE 5000
-
-# Comando para ejecutar la aplicación
-CMD ["python", "./app.py"]
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:80", "app:app"]
