@@ -1,19 +1,10 @@
-from flask import Flask, render_template, request
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-@app.route("/")
-def index():
-    return render_template("index.html")
+@app.route('/ping', methods=['POST'])
+def ping():
+    return jsonify({'message': 'pong'})
 
-@app.route("/github", methods=["POST"])
-def github():
-    data = request.get_json()
-    event = data["event"]
-    if event == "push":
-        # Implementar la lógica para manejar el evento push
-        pass
-    return "OK"
-
-if __name__ == "__main__":
-    app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=8080)
